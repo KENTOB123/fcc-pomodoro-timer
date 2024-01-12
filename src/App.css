@@ -1,38 +1,93 @@
+/* html, body {
+  background-color: brown;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+.App {
+  background-color: aqua;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80%;
+  width: 70%;
+}
+
+#wrapper {
+  background-color: aquamarine;
+  text-align: center;
+  margin: auto;
+  padding: auto;
+  max-width: 600px;
+} */
+
+.inline-block {
+  display: inline-block;
+}
+
+html, body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 画面の高さいっぱいに広げる */
+  background-color: rgb(11, 114, 94);
+}
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: rgb(185, 50, 133);
   color: white;
+  width: 100%;
+  padding: 40px;
+  max-width: 600px;
+  font-size: 50px;
+  border-radius: 2rem;
+
 }
 
-.App-link {
-  color: #61dafb;
+#break-label,#session-label,#timer-label{
+  font-size: 30px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#start_stop, #reset {
+  width: 100px;
+  height: 30px;
+  border: 2px solid white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+  background-color: rgb(185, 50, 133);
+  color: white;
+  border-bottom: solid 2px rgb(81, 19, 57);
+}
+
+#start_stop:active, #reset:active {
+  -ms-transform: translateY(2px);
+  -webkit-transform: translateY(2px);
+  transform: translateY(2px);
+  border-bottom: none;
+}
+
+#break-decrement,#break-increment,#session-decrement,#session-increment {
+  width: 70px;
+  height: 30px;
+  border: 2px solid white;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  transition: all .3s ease-in-out;
+  background-color: rgb(185, 50, 133);
+  color: white;
+  border-bottom: solid 2px rgb(81, 19, 57);
+}
+
+#break-decrement:active,#break-increment:active,#session-decrement:active,#session-increment:active {
+  -ms-transform: translateY(2px);
+  -webkit-transform: translateY(2px);
+  transform: translateY(2px);
+  border-bottom: none;
 }
