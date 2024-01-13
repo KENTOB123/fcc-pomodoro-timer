@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useRef } from 'react';
 import './App.css';
 
 function App() {
@@ -7,12 +7,30 @@ function App() {
   const [isSession, setIsSession] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [timer, setTimer] = useState(sessionDisplay);
-  const [alarmTimeout, setAlarmTimeout] = useState(null);
+  let [alarmTimeout, setAlarmTimeout] = useState(null);
 
-  const soundAlerm = document.getElementById('beep');
+  const soundAlerm = useRef(null);
+  console.log('soundAlerm:', soundAlerm);
+
+  const pushReset = () => {
+      clearInterval(countdown);
+      if(alarmTimeout) {
+        clearTimeout(alarmTimeout);
+      }
+    setBreakDisplay(5 * 60);
+    setSessionDisplay(25 * 60);
+    setTimer(25 * 60);
+    setIsRunning(false);
+    setIsSession(true);
+    if(soundAlerm.current){
+      soundAlerm.current.pause();
+      soundAlerm.current.currentTime = 0;
+    }
+  };
+
+  let countdown;
 
   useEffect(() => {
-      let countdown;
       if (isRunning && timer > 0) {
         countdown = setInterval(() => {
           setTimer((prevTimer) => prevTimer - 1);
@@ -20,16 +38,16 @@ function App() {
       }else if(timer === 0){
         setIsSession((prevIsSession) => !prevIsSession);
         setTimer(isSession ? breakDisplay : sessionDisplay);
-        soundAlerm.play();
+        soundAlerm.current.play();
 
-        const timeoutId = setTimeout(() => {
-          soundAlerm.pause();
-          soundAlerm.currentTime = 0;
+        alarmTimeout = setTimeout(() => {
+          soundAlerm.current.pause();
+          soundAlerm.current.currentTime = 0;
         }, 3000);
-
-        setAlarmTimeout(timeoutId);
       }
-      return () => {clearInterval(countdown);
+
+      return () => {
+        clearInterval(countdown);
       if(alarmTimeout) {
         clearTimeout(alarmTimeout);
       }
@@ -45,16 +63,6 @@ function App() {
     const toggleTimer = () => {
       setIsRunning((prevIsRunning) => !prevIsRunning);
     };
-
-  const pushReset = () => {
-    setBreakDisplay(5 * 60);
-    setSessionDisplay(25 * 60);
-    setTimer(25 * 60);
-    setIsRunning(false);
-    setIsSession(true);
-    soundAlerm.pause();
-    soundAlerm.currentTime = 0;
-  };
 
   const pushBreakDecrement = () => {
     if(!isRunning) {
@@ -100,7 +108,7 @@ function App() {
 
       <div id="time-left"
       >{formatTime(timer)}
-      <audio id='beep' src='https://wav-sounds.com/wp-content/uploads/2017/09/Cartoon-02.wav' />
+      <audio id='beep' ref={soundAlerm} src='https://wav-sounds.com/wp-content/uploads/2017/09/Cartoon-02.wav' />
       </div>
       <button id="start_stop" onClick={toggleTimer}>{isRunning ? 'Pause' : 'Start'}</button>
       <button id="reset" onClick={pushReset}>Reset</button>
@@ -108,5 +116,7 @@ function App() {
     </div>
   );
 }
+
+// フリー音源のサウンドを使う
 
 export default App;
